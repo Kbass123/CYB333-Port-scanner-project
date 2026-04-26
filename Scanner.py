@@ -52,92 +52,92 @@ SECURITY_NOTES = {
 
 
 def scan_port(target, port):
-"""
-Attempts to connect to a target port.
-Returns True if the port is open.
-"""
-try:
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.settimeout(1)
-result = sock.connect_ex((target, port))
-sock.close()
+    """
+    Attempts to connect to a target port.
+    Returns True if the port is open.
+    """
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(1)
+        result = sock.connect_ex((target, port))
+        sock.close()
 
-if result == 0:
-return True
-return False
+        if result == 0:
+            return True
+        return False
 
-except socket.gaierror:
-print("Hostname could not be resolved.")
-return False
+    except socket.gaierror:
+        print("Hostname could not be resolved.")
+        return False
 
-except socket.error:
-print("Could not connect to the target.")
-return False
+    except socket.error:
+        print("Could not connect to the target.")
+        return False
 
 
 def create_report(target, open_ports):
-"""
-Creates a text report with scan results.
-"""
-filename = "scan_report.txt"
+    """
+    Creates a text report with scan results.
+    """
+    filename = "scan_report.txt"
 
-with open(filename, "w") as report:
-report.write("CYB 333 Automated Port and Vulnerability Scanner Report\n")
-report.write("=" * 60 + "\n")
-report.write(f"Target Scanned: {target}\n")
-report.write(f"Scan Time: {datetime.now()}\n")
-report.write("=" * 60 + "\n\n")
+    with open(filename, "w") as report:
+        report.write("CYB 333 Automated Port and Vulnerability Scanner Report\n")
+        report.write("=" * 60 + "\n")
+        report.write(f"Target Scanned: {target}\n")
+        report.write(f"Scan Time: {datetime.now()}\n")
+        report.write("=" * 60 + "\n\n")
 
-if not open_ports:
-report.write("No open common ports were found during this scan.\n")
-else:
-report.write("Open Ports Found:\n\n")
+        if not open_ports:
+            report.write("No open common ports were found during this scan.\n")
+        else:
+            report.write("Open Ports Found:\n\n")
 
-for port in open_ports:
-service = COMMON_PORTS.get(port, "Unknown Service")
-note = SECURITY_NOTES.get(port, "Review this service for security risks.")
+            for port in open_ports:
+                service = COMMON_PORTS.get(port, "Unknown Service")
+                note = SECURITY_NOTES.get(port, "Review this service for security risks.")
 
-report.write(f"Port: {port}\n")
-report.write(f"Service: {service}\n")
-report.write(f"Security Note: {note}\n")
-report.write("-" * 40 + "\n")
+                report.write(f"Port: {port}\n")
+                report.write(f"Service: {service}\n")
+                report.write(f"Security Note: {note}\n")
+                report.write("-" * 40 + "\n")
 
-print(f"\nScan report saved as {filename}")
+    print(f"\nScan report saved as {filename}")
 
 
 def main():
-print("CYB 333 Automated Port and Vulnerability Scanner")
-print("Only scan systems you own or have permission to test.\n")
+    print("CYB 333 Automated Port and Vulnerability Scanner")
+    print("Only scan systems you own or have permission to test.\n")
 
-target = input("Enter target IP address or hostname: ").strip()
+    target = input("Enter target IP address or hostname: ").strip()
 
-if not target:
-print("No target entered. Please run the program again.")
-return
+    if not target:
+        print("No target entered. Please run the program again.")
+        return
 
-print(f"\nStarting scan on {target}...")
-print("Scanning common ports...\n")
+    print(f"\nStarting scan on {target}...")
+    print("Scanning common ports...\n")
 
-open_ports = []
+    open_ports = []
 
-for port in COMMON_PORTS:
-if scan_port(target, port):
-open_ports.append(port)
-print(f"[OPEN] Port {port}: {COMMON_PORTS[port]}")
-else:
-print(f"[CLOSED] Port {port}: {COMMON_PORTS[port]}")
+    for port in COMMON_PORTS:
+        if scan_port(target, port):
+            open_ports.append(port)
+            print(f"[OPEN] Port {port}: {COMMON_PORTS[port]}")
+        else:
+            print(f"[CLOSED] Port {port}: {COMMON_PORTS[port]}")
 
-print("\nScan complete.")
+    print("\nScan complete.")
 
-if open_ports:
-print("\nPotential Security Findings:")
-for port in open_ports:
-print(f"- Port {port} ({COMMON_PORTS[port]}): {SECURITY_NOTES[port]}")
-else:
-print("No open common ports were detected.")
+    if open_ports:
+        print("\nPotential Security Findings:")
+        for port in open_ports:
+            print(f"- Port {port} ({COMMON_PORTS[port]}): {SECURITY_NOTES[port]}")
+    else:
+        print("No open common ports were detected.")
 
-create_report(target, open_ports)
+    create_report(target, open_ports)
 
 
 if __name__ == "__main__":
-main()
+    main()
