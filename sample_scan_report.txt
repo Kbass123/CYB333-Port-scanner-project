@@ -1,0 +1,27 @@
+CYB 333 Automated Port and Vulnerability Scanner Report
+============================================================
+
+Target Scanned: 127.0.0.1
+Scan Time: 2026-04-26 11:59 PM
+
+============================================================
+
+Example Open Ports Found:
+
+Port: 80
+Service: HTTP
+Security Note: HTTP is not encrypted. Sensitive websites should use HTTPS.
+----------------------------------------
+
+Port: 443
+Service: HTTPS
+Security Note: HTTPS is encrypted, but certificates and web security still need to be checked.
+----------------------------------------
+
+Port: 3389
+Service: Remote Desktop Protocol
+Security Note: Remote Desktop is often targeted by brute-force attacks and should be restricted.
+----------------------------------------
+
+Note:
+This is a sample report for demonstration purposes. Actual scan results will depend on the target system being scanned.
